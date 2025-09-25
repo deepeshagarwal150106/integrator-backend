@@ -93,4 +93,39 @@ userRouter.get("/", authMiddleware, async (req, res) => {
   }
 });
 
+userRouter.get("/init", async (req, res) => {
+  try {
+    await prismaClient.availableActions.createMany({
+      data: [
+        {
+          id: "email",
+          name: "Email",
+          image:
+            "https://static.vecteezy.com/system/resources/previews/006/697/974/non_2x/mail-email-icon-template-black-color-editable-mail-email-icon-symbol-flat-illustration-for-graphic-and-web-design-free-vector.jpg",
+        },
+        {
+          id: "send-sol",
+          name: "Send SOL",
+          image:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjIvM673VAt0gkNsT-fxwMLsNeoepMWuxhLw&s",
+        },
+      ],
+    });
+    await prismaClient.availableTriggers.createMany({
+      data: [
+        {
+          id: "webhook",
+          name: "Webhook",
+          image:
+            "https://mailparser.io/wp-content/uploads/2018/08/what-is-a-webhook-1024x536.jpeg",
+        },
+      ],
+    });
+    res.send("Initialization done");
+  } catch (error) {
+    console.error("Error during initialization:", error);
+    res.status(500).send("Internal server error");
+  }
+});
+
 export { userRouter };
